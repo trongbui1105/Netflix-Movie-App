@@ -97,12 +97,14 @@ router.get("/stats", async (req, res) => {
     const data = await User.aggregate([
       {
         $project: {
+          year: { $year: "$createdAt" },
           month: { $month: "$createdAt" },
         },
       },
       {
         $group: {
           _id: "$month",
+          year: { $first : "$year" },
           total: { $sum: 1 },
         },
       },
